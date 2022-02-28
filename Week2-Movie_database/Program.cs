@@ -31,36 +31,45 @@ MovieService movieService = new MovieService();
 var menuService = new MenuService();
 MenuInicialize(menuService);
 var mainMenu = menuService.GetMenuByMenuName("Main");
+bool quit = false;
 
 Console.WriteLine("Welcome in movie database!");
-Console.WriteLine("Select action:");
-foreach (var menu in mainMenu)
+
+while (!quit)
 {
-    Console.WriteLine($"{menu.Id}. {menu.MenuAction}");   
+    Console.WriteLine("Select action:");
+    foreach (var menu in mainMenu)
+    {
+        Console.WriteLine($"{menu.Id}. {menu.MenuAction}");
+    }
+
+    var select = Console.ReadKey();
+
+    switch (select.KeyChar)
+    {
+        case '1':
+            movieService.AddMovie();
+            break;
+        case '2':
+            movieService.EditMovie(menuService);
+            break;
+        case '3':
+            break;
+        case '4':
+            break;
+        case '5':
+            break;
+        case '6':
+            quit = true;
+            break;
+
+
+        default:
+            Console.WriteLine("Selected action is unknown.");
+            break;
+    }
+
 }
 
-var select = Console.ReadKey();
-switch (select.KeyChar)
-{
-    case '1':
-        movieService.AddMovie();
-        break;
-    case '2':
-        movieService.EditMovie(menuService, movieService);
-        break;
-    case '3':
-        break;
-    case '4':
-        break;
-    case '5':
-        break;
-    case '6':
-        break;
-
-
-    default:
-        Console.WriteLine("Selected action is unknown.");
-        break;
-}
 
 

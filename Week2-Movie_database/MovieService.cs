@@ -52,7 +52,7 @@
                 {
                     inputRelaseDate = int.Parse(Console.ReadLine()); ;
                     if (inputRelaseDate > (int)DateTime.Today.Year || inputRelaseDate < 1895)
-                        Console.WriteLine("Incorret date. Enter correct date:");
+                        Console.WriteLine("Incorrect date. Enter correct date:");
                 }
 
                 Console.WriteLine("Enter your movie rating (from 1 to 10) and press 'Enter':");
@@ -70,7 +70,7 @@
 
         }
 
-        public void EditMovie(MenuService menuService, MovieService movieService)
+        public void EditMovie(MenuService menuService)
         {
             Console.WriteLine("Enter title of movie you want to edit:");
             string movieTitle = Console.ReadLine();
@@ -98,9 +98,13 @@
 
                 switch (select)
                 {
-                    case '1':
+                    case 1:
+                        Console.WriteLine("Enter new title:");
+                        movieToEdit.Title = Console.ReadLine();
+                        Console.WriteLine("Edited. New title: {0}",movieToEdit.Title);
                         break;
-                    case '2':
+
+                    case 2:
                         Console.WriteLine("Select new genere:");
                         var generes = Enum.GetNames(typeof(Generes));
                         for (int i = 0; i < generes.Length; i++)
@@ -115,14 +119,37 @@
                             selectedGenereId = int.Parse(Console.ReadKey().KeyChar.ToString());
                         }
                         movieToEdit.Genere = (Generes)selectedGenereId;
-                        Console.WriteLine("Genere update!");
+                        Console.WriteLine("Genere updated!");
                         break;
-                    case '3':
+
+                    case 3:
+                        Console.WriteLine("Enter your new rating:");
+                        int userRating = 0;
+                        while (userRating > 11 || userRating < 1)
+                        {
+                            userRating = int.Parse(Console.ReadLine());
+                            if (userRating > 11 || userRating < 1)
+                                Console.WriteLine("Enter rating between 1 and 10");
+                        }
+                        movieToEdit.YourRating = userRating;
+                        Console.WriteLine("Rating updated");
                         break;
-                    case '4':
+
+                    case 4:
+                        Console.WriteLine("Enter relase year:");
+                        int inputRelaseDate = 0;
+                        while (inputRelaseDate > (int)DateTime.Today.Year || inputRelaseDate < 1895)
+                        {
+                            inputRelaseDate = int.Parse(Console.ReadLine()); ;
+                            if (inputRelaseDate > (int)DateTime.Today.Year || inputRelaseDate < 1895)
+                                Console.WriteLine("Incorrect date. Enter correct date:");
+                        }
+                        movieToEdit.RelaseYear = inputRelaseDate;
+                        Console.WriteLine("Relase year updated");
                         break;
 
                     default:
+                        Console.WriteLine("Incorrect option.");
                         break;
                 }
 
