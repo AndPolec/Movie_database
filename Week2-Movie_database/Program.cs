@@ -1,16 +1,4 @@
-﻿//Movie Database
-////1.Dodaj nowy film
-////2.Edytuj istniejący film
-////3.Usuń film
-////4.Wyświetl filmy dostępne w bazie
-////5.Ranking filmów
-//////1a. Pobierz dane, i sprawdź czy film jest już w bazie
-//////2a. Pobierz nazwę i sprawdź czy film jest w baze, jeśli tak  wyświetl dany i zapytaj co edytować 
-//////3a. Pobierz nazwę i sprawdż czy istnieje, wyświetl dane i zapytaj czy na pewno usunąć
-//////4a. Zapytaj czy wyświetlić wszystkie czy po gatunku
-//////5a. Wyświetl ranking po ocenie
-
-using Week2_Movie_database;
+﻿using Week2_Movie_database;
 
 static void MenuInicialize(MenuService menuService)
 {
@@ -54,16 +42,17 @@ while (!quit)
             movieService.EditMovie(menuService);
             break;
         case '3':
+            movieService.DeleteMovie();
             break;
         case '4':
+            movieService.DisplayAllMovies();
             break;
         case '5':
+            movieService.DisplayRanking();
             break;
         case '6':
             quit = true;
             break;
-
-
         default:
             Console.WriteLine("Selected action is unknown.");
             break;

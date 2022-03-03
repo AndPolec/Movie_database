@@ -33,11 +33,13 @@
             else
             {
                 Console.WriteLine("Select genere:");
+
                 var generes = Enum.GetNames(typeof(Generes));
                 for (int i = 0; i < generes.Length; i++)
                 {
                     Console.WriteLine($"{i + 1}. {generes[i]}");
                 }
+
                 int selectedGenereId = 0;
                 while (selectedGenereId > generes.Length || selectedGenereId < 1)
                 {
@@ -68,6 +70,18 @@
                 Console.WriteLine($"Movie {inputTitle} added to base.");
             }
 
+        }
+
+        public void DisplayRanking()
+        {
+            var rankList = _movies.OrderByDescending(m=>m.YourRating).ToList();
+            5int position = 1;
+            foreach(Movie movie in rankList)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"{position}.Title: {movie.Title}, Rating: {movie.YourRating}");
+                position++;
+            }
         }
 
         public void EditMovie(MenuService menuService)
@@ -156,6 +170,34 @@
             }
         }
 
+        public void DeleteMovie()
+        {
+            Console.WriteLine("Enter title of movie you want to delete:");
+            string movieToDelete = Console.ReadLine();
+            if (!IsMovieInDB(movieToDelete))
+            {
+                Console.WriteLine("Movie is not in the database.");
+            }
+            else
+            {
+                ShowMovieInfo(movieToDelete);
+                _movies.Remove(_movies.Find(m => m.Title == movieToDelete));
+                Console.WriteLine("Movie deleted");
+            }
+        }
 
+        public void DisplayAllMovies()
+        {
+            Console.WriteLine("Movies in databse:");
+
+            foreach (Movie movie in _movies)
+            {
+                Console.WriteLine();
+                ShowMovieInfo(movie.Title);
+                Console.WriteLine();
+            }
+        }
+
+        
     }
 }
