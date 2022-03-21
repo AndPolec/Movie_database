@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Week2_Movie_database
+namespace Movie_database
 {
     public class Menu
     {

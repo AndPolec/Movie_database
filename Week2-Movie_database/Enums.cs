@@ -1,4 +1,4 @@
-﻿namespace Week2_Movie_database
+﻿namespace Movie_database
 {
 
     public enum Generes

@@ -1,4 +1,4 @@
-﻿namespace Week2_Movie_database
+﻿namespace Movie_database
 {
     public class MovieService
     {
@@ -75,7 +75,7 @@
         public void DisplayRanking()
         {
             var rankList = _movies.OrderByDescending(m=>m.YourRating).ToList();
-            5int position = 1;
+            int position = 1;
             foreach(Movie movie in rankList)
             {
                 Console.WriteLine();
