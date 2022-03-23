@@ -1,17 +1,26 @@
-﻿namespace Movie_database
+﻿using Movie_database.App.Concrete;
+using Movie_database.Domain.Common;
+using Movie_database.Domain.Entity;
+
+namespace Movie_database.App.Managers
 {
-    public class MovieService
+    public class MovieManager
     {
-        private List<Movie> _movies = new List<Movie>();
+        private readonly MovieService _movieService;
+
+        public MovieManager()
+        {
+            _movieService = new MovieService();
+        }
 
         public bool IsMovieInDB(string title)
         {
-            return _movies.Any(m => m.Title.ToLower() == title.ToLower()) ? true : false;
+            return _movieService.Items.Any(m => m.Title.ToLower() == title.ToLower()) ? true : false;
         }
 
         public void ShowMovieInfo(string title)
         {
-            Movie movie = _movies.Find(m => m.Title.ToLower() == title.ToLower());
+            Movie movie = _movieService.Items.Find(m => m.Title.ToLower() == title.ToLower());
             Console.WriteLine("*******************");
             Console.WriteLine($"Title: {movie.Title}");
             Console.WriteLine($"Genere: {movie.Genere}");
@@ -19,7 +28,7 @@
             Console.WriteLine($"Relase year: {movie.RelaseYear}");
             Console.WriteLine($"Added to database: {movie.AdditionDate.ToString("g")}");
             Console.WriteLine("*******************");
-            
+
         }
 
         public void AddMovie()
@@ -66,25 +75,13 @@
                         Console.WriteLine("Enter rating between 1 and 10");
                 }
 
-                _movies.Add(new Movie(inputTitle, selectedGenere, userRating, inputRelaseDate));
+                _movieService.Items.Add(new Movie(_movieService.GetLastId()+1 ,inputTitle, selectedGenere, userRating, inputRelaseDate));
                 Console.WriteLine($"Movie {inputTitle} added to base.");
             }
 
         }
 
-        public void DisplayRanking()
-        {
-            var rankList = _movies.OrderByDescending(m=>m.YourRating).ToList();
-            int position = 1;
-            foreach(Movie movie in rankList)
-            {
-                Console.WriteLine();
-                Console.WriteLine($"{position}.Title: {movie.Title}, Rating: {movie.YourRating}");
-                position++;
-            }
-        }
-
-        public void EditMovie(MenuService menuService)
+        public void EditMovie(List<Menu> editMenu)
         {
             Console.WriteLine("Enter title of movie you want to edit:");
             string movieTitle = Console.ReadLine();
@@ -94,10 +91,9 @@
             }
             else
             {
-                Movie movieToEdit = _movies.Find(m => m.Title == movieTitle);
+                Movie movieToEdit = _movieService.Items.Find(m => m.Title == movieTitle);
                 ShowMovieInfo(movieToEdit.Title);
 
-                var editMenu = menuService.GetMenuByMenuName("Edit movie");
                 foreach (var menu in editMenu)
                 {
                     Console.WriteLine($"{menu.Id}. {menu.MenuAction}");
@@ -115,7 +111,7 @@
                     case 1:
                         Console.WriteLine("Enter new title:");
                         movieToEdit.Title = Console.ReadLine();
-                        Console.WriteLine("Edited. New title: {0}",movieToEdit.Title);
+                        Console.WriteLine("Edited. New title: {0}", movieToEdit.Title);
                         break;
 
                     case 2:
@@ -173,15 +169,15 @@
         public void DeleteMovie()
         {
             Console.WriteLine("Enter title of movie you want to delete:");
-            string movieToDelete = Console.ReadLine();
-            if (!IsMovieInDB(movieToDelete))
+            string titleOfMovieToDelete = Console.ReadLine();
+            if (!IsMovieInDB(titleOfMovieToDelete))
             {
                 Console.WriteLine("Movie is not in the database.");
             }
             else
             {
-                ShowMovieInfo(movieToDelete);
-                _movies.Remove(_movies.Find(m => m.Title == movieToDelete));
+                ShowMovieInfo(titleOfMovieToDelete);
+                _movieService.Remove(titleOfMovieToDelete);
                 Console.WriteLine("Movie deleted");
             }
         }
@@ -190,7 +186,7 @@
         {
             Console.WriteLine("Movies in databse:");
 
-            foreach (Movie movie in _movies)
+            foreach (var movie in _movieService.Items)
             {
                 Console.WriteLine();
                 ShowMovieInfo(movie.Title);
@@ -198,6 +194,17 @@
             }
         }
 
-        
+        public void DisplayRanking()
+        {
+            var rankList = _movieService.Items.OrderByDescending(m => m.YourRating).ToList();
+            int position = 1;
+            foreach (Movie movie in rankList)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"{position}.Title: {movie.Title}, Rating: {movie.YourRating}");
+                position++;
+            }
+        }
+
     }
 }

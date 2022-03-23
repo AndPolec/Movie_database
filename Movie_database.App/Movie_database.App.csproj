@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Concrete\" />
+    <ProjectReference Include="..\Movie_database.Domain\Movie_database.Domain.csproj" />
   </ItemGroup>
 
 </Project>

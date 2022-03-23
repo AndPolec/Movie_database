@@ -10,7 +10,10 @@ namespace Movie_database.App.Abstract
     {
         List<T> Items { get; set; }
 
-
+        List<T> GetAll();
+        int Add(T item);
+        int Update(T item);
+        void Remove(T item);
 
 
     }

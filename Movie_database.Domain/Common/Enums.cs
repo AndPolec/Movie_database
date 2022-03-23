@@ -1,4 +1,4 @@
-﻿namespace Movie_database
+﻿namespace Movie_database.Domain.Common
 {
 
     public enum Generes

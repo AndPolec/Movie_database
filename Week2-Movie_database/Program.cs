@@ -1,23 +1,8 @@
-﻿using Movie_database;
+﻿using Movie_database.App.Concrete;
+using Movie_database.App.Managers;
 
-static void MenuInicialize(MenuService menuService)
-{
-    menuService.AddMenu(1, "Add new movie", "Main");
-    menuService.AddMenu(2, "Edit movie", "Main");
-    menuService.AddMenu(3, "Delete movie", "Main");
-    menuService.AddMenu(4, "Display movies from DB", "Main");
-    menuService.AddMenu(5, "Display rankings", "Main");
-    menuService.AddMenu(6, "Quit", "Main");
-
-    menuService.AddMenu(1, "Title", "Edit movie");
-    menuService.AddMenu(2, "Genere", "Edit movie");
-    menuService.AddMenu(3, "Rating", "Edit movie");
-    menuService.AddMenu(4, "Relase date", "Edit movie");
-}
-
-MovieService movieService = new MovieService();
+var movieManager = new MovieManager();
 var menuService = new MenuService();
-MenuInicialize(menuService);
 var mainMenu = menuService.GetMenuByMenuName("Main");
 bool quit = false;
 
@@ -36,19 +21,19 @@ while (!quit)
     switch (select.KeyChar)
     {
         case '1':
-            movieService.AddMovie();
+            movieManager.AddMovie();
             break;
         case '2':
-            movieService.EditMovie(menuService);
+            movieManager.EditMovie(menuService.GetMenuByMenuName("Edit movie"));
             break;
         case '3':
-            movieService.DeleteMovie();
+            movieManager.DeleteMovie();
             break;
         case '4':
-            movieService.DisplayAllMovies();
+            movieManager.DisplayAllMovies();
             break;
         case '5':
-            movieService.DisplayRanking();
+            movieManager.DisplayRanking();
             break;
         case '6':
             quit = true;
