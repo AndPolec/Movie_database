@@ -91,7 +91,7 @@ namespace Movie_database.App.Managers
             }
             else
             {
-                Movie movieToEdit = _movieService.Items.Find(m => m.Title == movieTitle);
+                Movie movieToEdit = _movieService.Items.Find(m => m.Title.ToLower() == movieTitle.ToLower());
                 ShowMovieInfo(movieToEdit.Title);
 
                 foreach (var menu in editMenu)
