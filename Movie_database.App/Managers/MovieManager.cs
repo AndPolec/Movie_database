@@ -182,16 +182,94 @@ namespace Movie_database.App.Managers
             }
         }
 
-        public void DisplayAllMovies()
+        public void DisplayMovies(List<Menu> displayMenu)
         {
-            Console.WriteLine("\nMovies in databse:");
-
-            foreach (var movie in _movieService.Items)
+            Console.WriteLine();
+            foreach (var menu in displayMenu)
             {
-                Console.WriteLine();
-                ShowMovieInfo(movie.Title);
-                Console.WriteLine();
+                Console.WriteLine($"{menu.Id}. {menu.MenuAction}");
             }
+
+            int select = 0;
+            while (select > 4 || select < 1)
+            {
+                Console.WriteLine("Select:");
+                select = int.Parse(Console.ReadKey().KeyChar.ToString());
+            }
+
+            switch (select)
+            {
+                case 1:
+                    Console.WriteLine("\nMovies in database:");
+
+                    foreach (var movie in _movieService.Items.OrderBy(m => m.Title).ToList())
+                    {
+                        Console.WriteLine();
+                        ShowMovieInfo(movie.Title);
+                        Console.WriteLine();
+                    }
+                    break;
+
+                case 2:
+                    Console.WriteLine("\nSelect type of movie you want to display:");
+                    var generes = Enum.GetNames(typeof(Generes));
+                    for (int i = 0; i < generes.Length; i++)
+                    {
+                        Console.WriteLine($"{i + 1}. {generes[i]}");
+                    }
+
+                    int selectedGenereId = 0;
+                    while (selectedGenereId > generes.Length || selectedGenereId < 1)
+                    {
+                        Console.WriteLine("Select: ");
+                        selectedGenereId = int.Parse(Console.ReadKey().KeyChar.ToString());
+                    }
+                    Generes selectedGenere = (Generes)selectedGenereId;
+
+                    List<Movie> listByGenere = _movieService.Items.FindAll(m => m.Genere == selectedGenere);
+                    if (listByGenere.Count == 0)
+                    {
+                        Console.WriteLine("There are no movies from the selected genere in the database.");
+                    }
+                    else
+                    {
+                        foreach (var movie in listByGenere)
+                        {
+                            Console.WriteLine();
+                            ShowMovieInfo(movie.Title);
+                            Console.WriteLine();
+                        }
+                    }
+                    break;
+
+                case 3:
+                    Console.WriteLine("\nEnter movie relase date:");
+                    int inputRelaseDate = 0;
+                    inputRelaseDate = int.Parse(Console.ReadLine());
+
+                    List<Movie> listByYear = _movieService.Items.FindAll(m => m.RelaseYear == inputRelaseDate);
+
+                    if (listByYear.Count==0)
+                    {
+                        Console.WriteLine("There are no movies from the selected year in the database.");
+                    }
+                    else
+                    {
+                        foreach (var movie in listByYear)
+                        {
+                            Console.WriteLine();
+                            ShowMovieInfo(movie.Title);
+                            Console.WriteLine();
+                        }
+                    }
+                    break;
+
+                default:
+                    Console.WriteLine("\nIncorrect option.");
+                    break;
+            }
+
+        
         }
 
         public void DisplayRanking()

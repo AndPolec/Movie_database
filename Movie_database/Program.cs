@@ -30,7 +30,7 @@ while (!quit)
             movieManager.DeleteMovie();
             break;
         case '4':
-            movieManager.DisplayAllMovies();
+            movieManager.DisplayMovies(menuService.GetMenuByMenuName("Display movies from DB"));
             break;
         case '5':
             movieManager.DisplayRanking();
