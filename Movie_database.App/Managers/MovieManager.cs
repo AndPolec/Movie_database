@@ -33,7 +33,7 @@ namespace Movie_database.App.Managers
 
         public void AddMovie()
         {
-            Console.WriteLine("Enter title of movie you want to add:");
+            Console.WriteLine("\nEnter title of movie you want to add:");
             string inputTitle = Console.ReadLine();
             if (IsMovieInDB(inputTitle))
             {
@@ -57,7 +57,7 @@ namespace Movie_database.App.Managers
                 }
                 Generes selectedGenere = (Generes)selectedGenereId;
 
-                Console.WriteLine("Enter movie relase date:");
+                Console.WriteLine("\nEnter movie relase date:");
                 int inputRelaseDate = 0;
                 while (inputRelaseDate > (int)DateTime.Today.Year || inputRelaseDate < 1895)
                 {
@@ -83,7 +83,7 @@ namespace Movie_database.App.Managers
 
         public void EditMovie(List<Menu> editMenu)
         {
-            Console.WriteLine("Enter title of movie you want to edit:");
+            Console.WriteLine("\nEnter title of movie you want to edit:");
             string movieTitle = Console.ReadLine();
             if (!IsMovieInDB(movieTitle))
             {
@@ -109,13 +109,13 @@ namespace Movie_database.App.Managers
                 switch (select)
                 {
                     case 1:
-                        Console.WriteLine("Enter new title:");
+                        Console.WriteLine("\nEnter new title:");
                         movieToEdit.Title = Console.ReadLine();
                         Console.WriteLine("Edited. New title: {0}", movieToEdit.Title);
                         break;
 
                     case 2:
-                        Console.WriteLine("Select new genere:");
+                        Console.WriteLine("\nSelect new genere:");
                         var generes = Enum.GetNames(typeof(Generes));
                         for (int i = 0; i < generes.Length; i++)
                         {
@@ -133,7 +133,7 @@ namespace Movie_database.App.Managers
                         break;
 
                     case 3:
-                        Console.WriteLine("Enter your new rating:");
+                        Console.WriteLine("\nEnter your new rating:");
                         int userRating = 0;
                         while (userRating > 11 || userRating < 1)
                         {
@@ -146,7 +146,7 @@ namespace Movie_database.App.Managers
                         break;
 
                     case 4:
-                        Console.WriteLine("Enter relase year:");
+                        Console.WriteLine("\nEnter relase year:");
                         int inputRelaseDate = 0;
                         while (inputRelaseDate > (int)DateTime.Today.Year || inputRelaseDate < 1895)
                         {
@@ -159,7 +159,7 @@ namespace Movie_database.App.Managers
                         break;
 
                     default:
-                        Console.WriteLine("Incorrect option.");
+                        Console.WriteLine("\nIncorrect option.");
                         break;
                 }
 
@@ -168,7 +168,7 @@ namespace Movie_database.App.Managers
 
         public void DeleteMovie()
         {
-            Console.WriteLine("Enter title of movie you want to delete:");
+            Console.WriteLine("\nEnter title of movie you want to delete:");
             string titleOfMovieToDelete = Console.ReadLine();
             if (!IsMovieInDB(titleOfMovieToDelete))
             {
@@ -184,7 +184,7 @@ namespace Movie_database.App.Managers
 
         public void DisplayAllMovies()
         {
-            Console.WriteLine("Movies in databse:");
+            Console.WriteLine("\nMovies in databse:");
 
             foreach (var movie in _movieService.Items)
             {
