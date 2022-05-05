@@ -1,4 +1,5 @@
-﻿using Movie_database.App.Concrete;
+﻿using Movie_database.App.Abstract;
+using Movie_database.App.Concrete;
 using Movie_database.Domain.Common;
 using Movie_database.Domain.Entity;
 
@@ -8,9 +9,9 @@ namespace Movie_database.App.Managers
     {
         private readonly MovieService _movieService;
 
-        public MovieManager()
+        public MovieManager(MovieService service)
         {
-            _movieService = new MovieService();
+            _movieService = service;
         }
 
         public bool IsMovieInDB(string title)
@@ -53,7 +54,7 @@ namespace Movie_database.App.Managers
                 while (selectedGenereId > generes.Length || selectedGenereId < 1)
                 {
                     Console.WriteLine("Select: ");
-                    selectedGenereId = int.Parse(Console.ReadKey().KeyChar.ToString());
+                    selectedGenereId = int.Parse(Console.ReadLine());
                 }
                 Generes selectedGenere = (Generes)selectedGenereId;
 
@@ -103,7 +104,7 @@ namespace Movie_database.App.Managers
                 while (select > 4 || select < 1)
                 {
                     Console.WriteLine("Select information you want to edit:");
-                    select = int.Parse(Console.ReadKey().KeyChar.ToString());
+                    select = int.Parse(Console.ReadLine());
                 }
 
                 switch (select)
@@ -126,7 +127,7 @@ namespace Movie_database.App.Managers
                         while (selectedGenereId > generes.Length || selectedGenereId < 1)
                         {
                             Console.WriteLine("Select: ");
-                            selectedGenereId = int.Parse(Console.ReadKey().KeyChar.ToString());
+                            selectedGenereId = int.Parse(Console.ReadLine());
                         }
                         movieToEdit.Genere = (Generes)selectedGenereId;
                         Console.WriteLine("Genere updated!");

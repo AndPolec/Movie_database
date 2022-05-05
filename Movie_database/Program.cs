@@ -1,7 +1,8 @@
 ﻿using Movie_database.App.Concrete;
 using Movie_database.App.Managers;
 
-var movieManager = new MovieManager();
+var movieService = new MovieService();
+var movieManager = new MovieManager(movieService);
 var menuService = new MenuService();
 var mainMenu = menuService.GetMenuByMenuName("Main");
 bool quit = false;
