@@ -93,6 +93,24 @@ namespace Movie_database.Tests
             result.YourRating.Should().Be(10);
             result.RelaseYear.Should().Be(2000);
         }
+    
+        [Fact]
+        public void DeleteMovieTest()
+        {
+            var mock = new Mock<MovieService>();
+            mock.Object.Add(new Movie(1, "Tytuł", Domain.Common.Generes.Comedy, 1, 1990));
+            var manager = new MovieManager(mock.Object);
+
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("Tytuł");
+            var stringReader = new StringReader(stringBuilder.ToString());
+            Console.SetIn(stringReader);
+
+            manager.DeleteMovie();
+
+            mock.Object.Items.Should().BeEmpty();
+        }
+    
     }
 
 
