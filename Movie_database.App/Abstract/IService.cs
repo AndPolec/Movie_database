@@ -14,6 +14,7 @@ namespace Movie_database.App.Abstract
         int Add(T item);
         int Update(T item);
         void Remove(T item);
+        public int GetLastId();
 
 
     }

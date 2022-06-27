@@ -1,5 +1,4 @@
-﻿using Movie_database.App.Abstract;
-using Movie_database.App.Concrete;
+﻿using Movie_database.App.Concrete;
 using Movie_database.Domain.Common;
 using Movie_database.Domain.Entity;
 
@@ -8,10 +7,12 @@ namespace Movie_database.App.Managers
     public class MovieManager
     {
         private readonly MovieService _movieService;
+        private string[] _generes;
 
         public MovieManager(MovieService service)
         {
             _movieService = service;
+            _generes = Enum.GetNames(typeof(Generes));
         }
 
         public bool IsMovieInDB(string title)
@@ -27,59 +28,34 @@ namespace Movie_database.App.Managers
             Console.WriteLine($"Genere: {movie.Genere}");
             Console.WriteLine($"Rating: {movie.YourRating}/10");
             Console.WriteLine($"Relase year: {movie.RelaseYear}");
-            Console.WriteLine($"Added to database: {movie.AdditionDate.ToString("g")}");
             Console.WriteLine("*******************");
 
         }
 
-        public void AddMovie()
+        public int AddMovie()
         {
             Console.WriteLine("\nEnter title of movie you want to add:");
-            string inputTitle = Console.ReadLine();
-            if (IsMovieInDB(inputTitle))
+            string title = Console.ReadLine();
+
+            if (IsMovieInDB(title))
             {
                 Console.WriteLine("Movie is already in database!");
-            }
-            else
-            {
-                Console.WriteLine("Select genere:");
-
-                var generes = Enum.GetNames(typeof(Generes));
-                for (int i = 0; i < generes.Length; i++)
-                {
-                    Console.WriteLine($"{i + 1}. {generes[i]}");
-                }
-
-                int selectedGenereId = 0;
-                while (selectedGenereId > generes.Length || selectedGenereId < 1)
-                {
-                    Console.WriteLine("Select: ");
-                    selectedGenereId = int.Parse(Console.ReadLine());
-                }
-                Generes selectedGenere = (Generes)selectedGenereId;
-
-                Console.WriteLine("\nEnter movie relase date:");
-                int inputRelaseDate = 0;
-                while (inputRelaseDate > (int)DateTime.Today.Year || inputRelaseDate < 1895)
-                {
-                    inputRelaseDate = int.Parse(Console.ReadLine()); ;
-                    if (inputRelaseDate > (int)DateTime.Today.Year || inputRelaseDate < 1895)
-                        Console.WriteLine("Incorrect date. Enter correct date:");
-                }
-
-                Console.WriteLine("Enter your movie rating (from 1 to 10) and press 'Enter':");
-                int userRating = 0;
-                while (userRating > 11 || userRating < 1)
-                {
-                    userRating = int.Parse(Console.ReadLine());
-                    if (userRating > 11 || userRating < 1)
-                        Console.WriteLine("Enter rating between 1 and 10");
-                }
-
-                _movieService.Items.Add(new Movie(_movieService.GetLastId()+1 ,inputTitle, selectedGenere, userRating, inputRelaseDate));
-                Console.WriteLine($"Movie {inputTitle} added to base.");
+                return -1;
             }
 
+            Console.WriteLine("Select genere:");
+            Generes genere = SelectGenere();
+
+            Console.WriteLine("\nEnter movie relase date (1985-{0}):", DateTime.Today.Year);
+            int relaseDate = SelectRelaseDate();
+                
+            Console.WriteLine("Enter your movie rating (from 1 to 10):");
+            int rating = SelectRating();
+
+            var movie = new Movie(_movieService.GetLastId() + 1, title, genere, rating, relaseDate);
+            Console.WriteLine($"Movie {title} added to base.");
+
+            return _movieService.Add(movie);
         }
 
         public void EditMovie(List<Menu> editMenu)
@@ -285,5 +261,79 @@ namespace Movie_database.App.Managers
             }
         }
 
+        public int TakeNumberFromUser(string typeOfNumber)
+        {
+            string input;
+            int resultNumber = 0;
+
+            switch (typeOfNumber)
+            {
+                case "genere":
+                    while (true)
+                    {
+                        Console.WriteLine("Select: ");
+                        input = Console.ReadLine();
+
+                        if(!input.Any(n => n < '0' || n > '9'))
+                        {
+                            if(Int32.Parse(input) >= 1 && Int32.Parse(input) <= _generes.Length)
+                            {
+                                resultNumber = Int32.Parse(input);
+                                break;
+                            }
+                        }
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+            return resultNumber;
+        }
+
+        private Generes SelectGenere()
+        {
+            for (int i = 0; i < _generes.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {_generes[i]}");
+            }
+
+            int selectedGenereNumber = -1;
+            Console.WriteLine("Select: ");
+
+            while (selectedGenereNumber == -1)
+            {
+                ConsoleKeyInfo userInput = Console.ReadKey();
+
+                if (char.IsDigit(userInput.KeyChar) && int.Parse(userInput.KeyChar.ToString()) >= 1 && int.Parse(userInput.KeyChar.ToString()) <= _generes.Length)
+                    selectedGenereNumber = int.Parse(userInput.KeyChar.ToString());
+            }
+            
+            return (Generes)selectedGenereNumber;
+        }
+    
+        private int SelectRelaseDate()
+        {
+            int inputRelaseDate = 0;
+            while (inputRelaseDate > (int)DateTime.Today.Year || inputRelaseDate < 1895)
+            {
+                inputRelaseDate = int.Parse(Console.ReadLine());
+            }
+
+            return inputRelaseDate;
+        }
+        
+        private int SelectRating()
+        {
+            int rating = 0;
+            while (rating > 11 || rating < 1)
+            {
+                rating = int.Parse(Console.ReadLine());
+            }
+
+            return rating;
+        }
+    
     }
 }
