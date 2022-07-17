@@ -42,5 +42,12 @@ public class MenuService : BaseService<Menu>
         return menuListByMenuName;
     }
 
+    public static void DisplayMenu(List<Menu> menu)
+    {
+        foreach (var m in menu)
+        {
+            Console.WriteLine($"{m.Id}. {m.MenuAction}");
+        }
+    }
 
 }

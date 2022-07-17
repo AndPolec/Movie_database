@@ -38,6 +38,7 @@ namespace Movie_database.App.Common
             Items.Remove(item);
         }
 
+
         public int Update(T item)
         {
             var entity = Items.FirstOrDefault(p => p.Id == item.Id);
